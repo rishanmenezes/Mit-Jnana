@@ -131,13 +131,7 @@ function App() {
       </div>
       <footer className="footer" id="app-footer">
         <span className="footer__tagline">MIT Jnana — Student Resource Hub</span>
-        <a
-          className="footer__credit"
-          href="https://www.linkedin.com/in/rishan-menezes/"
-          target="_blank"
-          rel="noopener noreferrer"
-          id="developer-credit"
-        >
+        <div className="footer__credit" id="developer-credit">
           <img
             className="footer__avatar"
             src="/developer.jpg"
@@ -145,8 +139,29 @@ function App() {
             width="32"
             height="32"
           />
-          <span className="footer__credit-text">Built by <strong>Rishan Menezes</strong></span>
-        </a>
+          <div className="footer__credit-info">
+            <span className="footer__credit-text">Built by <strong>Rishan Menezes</strong></span>
+            <div className="footer__links">
+              <a
+                className="footer__link"
+                href="https://www.linkedin.com/in/rishan-menezes/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <span className="footer__link-sep">•</span>
+              <a
+                className="footer__link"
+                href="https://www.instagram.com/rizzshhan"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
+            </div>
+          </div>
+        </div>
       </footer>
     </>
   )

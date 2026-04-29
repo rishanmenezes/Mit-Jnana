@@ -1,71 +1,47 @@
 import { useState, useEffect, memo } from 'react'
 import Search from './Search'
 
-const COUNTER_API_URL = 'https://abacus.jasoncameron.dev/hit/mit-jnana-v1/visits'
-const CACHE_KEY = 'mitjnana_visitor_cache'
-const CACHE_TTL_MS = 5 * 60 * 1000
-
-/** Read cached visitor count from sessionStorage if still within TTL. */
-function getCachedCount() {
-  try {
-    const raw = sessionStorage.getItem(CACHE_KEY)
-    if (!raw) return null
-    const { value, ts } = JSON.parse(raw)
-    if (Date.now() - ts < CACHE_TTL_MS && typeof value === 'number') return value
-  } catch { /* ignore corrupted cache */ }
-  return null
-}
-
-/** Write visitor count + timestamp to sessionStorage. */
-function setCachedCount(value) {
-  try {
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ value, ts: Date.now() }))
-  } catch { /* storage full or unavailable */ }
-}
+const API_PRIMARY = 'https://abacus.jasoncameron.dev/hit/mit-jnana/visits'
+const API_FALLBACK = 'https://api.countapi.xyz/hit/mit-jnana/visits'
 
 function Header({ onMenuToggle, notes, onSelectNote }) {
-  const [visitorCount, setVisitorCount] = useState(() => getCachedCount())
-  const [failed, setFailed] = useState(false)
+  const [visitorCount, setVisitorCount] = useState(null)
 
   useEffect(() => {
-    if (visitorCount !== null) return
-
     let cancelled = false
 
-    async function fetchCount(isRetry = false) {
-      try {
-        const res = await fetch(COUNTER_API_URL)
+    fetch(API_PRIMARY, { cache: 'no-store' })
+      .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-
+        return res.json()
+      })
+      .then(data => {
         if (!cancelled && typeof data?.value === 'number') {
           setVisitorCount(data.value)
-          setCachedCount(data.value)
         } else if (!cancelled) {
           throw new Error('Invalid response format')
         }
-      } catch {
+      })
+      .catch(() => {
         if (cancelled) return
-        if (!isRetry) {
-          setTimeout(() => { if (!cancelled) fetchCount(true) }, 1000)
-        } else {
-          setFailed(true)
-        }
-      }
-    }
+        fetch(API_FALLBACK)
+          .then(res => res.json())
+          .then(data => {
+            if (!cancelled && typeof data?.value === 'number') {
+              setVisitorCount(data.value)
+            }
+          })
+          .catch(() => {
+            if (!cancelled) setVisitorCount(0)
+          })
+      })
 
-    fetchCount()
     return () => { cancelled = true }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
-  let counterNumber
-  if (visitorCount !== null) {
-    counterNumber = visitorCount.toLocaleString()
-  } else if (failed) {
-    counterNumber = '0'
-  } else {
-    counterNumber = '...'
-  }
+  const counterNumber = visitorCount !== null
+    ? visitorCount.toLocaleString()
+    : '...'
 
   return (
     <header className="header" id="app-header">

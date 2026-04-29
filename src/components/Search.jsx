@@ -1,6 +1,31 @@
 import { useState, useRef, useEffect, useMemo, useCallback, memo } from 'react'
 import { LABEL_COLORS } from '../data/constants'
 
+/** Debounce a value by the given delay (ms). */
+function useDebounce(value, delay = 250) {
+  const [debounced, setDebounced] = useState(value)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+
+  return debounced
+}
+
+/** Escape regex special characters in a string. */
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/** Highlight matching portions of text by wrapping them in <mark> tags. */
+function highlightMatch(text, query) {
+  const safeText = typeof text === 'string' ? text : ''
+  if (!query) return safeText
+  const regex = new RegExp(`(${escapeRegex(query)})`, 'gi')
+  return safeText.replace(regex, '<mark>$1</mark>')
+}
+
 function Search({ notes, onSelect }) {
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
@@ -9,19 +34,39 @@ function Search({ notes, onSelect }) {
   const inputRef = useRef(null)
   const listRef = useRef(null)
 
-  // Filter notes — matches across title, subject, branch, semester, and label
+  const debouncedQuery = useDebounce(query)
+
+  // Ranked search: exact match (3) > prefix match (2) > contains (1)
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase()
+    const q = debouncedQuery.trim().toLowerCase()
     if (!q || !Array.isArray(notes)) return []
 
-    return notes.filter((note) =>
-      note.title.toLowerCase().includes(q) ||
-      note.subject.toLowerCase().includes(q) ||
-      note.branch.toLowerCase().includes(q) ||
-      note.semester.toLowerCase().includes(q) ||
-      (note.label && note.label.toLowerCase().includes(q))
-    )
-  }, [query, notes])
+    return notes
+      .map((note) => {
+        const title = (note.title || '').toLowerCase()
+        const subject = (note.subject || '').toLowerCase()
+        const branch = (note.branch || '').toLowerCase()
+        const semester = (note.semester || '').toLowerCase()
+        const label = (note.label || '').toLowerCase()
+
+        let score = 0
+
+        if (title === q || subject === q) score = 3
+        else if (title.startsWith(q) || subject.startsWith(q)) score = 2
+        else if (
+          title.includes(q) ||
+          subject.includes(q) ||
+          branch.includes(q) ||
+          semester.includes(q) ||
+          label.includes(q)
+        ) score = 1
+
+        return { ...note, _score: score }
+      })
+      .filter(n => n._score > 0)
+      .sort((a, b) => b._score - a._score)
+      .slice(0, 10)
+  }, [debouncedQuery, notes])
 
   useEffect(() => { setActiveIndex(-1) }, [results])
 
@@ -133,7 +178,10 @@ function Search({ notes, onSelect }) {
                     id={`search-result-${note.id}`}
                   >
                     <div className="search__result-main">
-                      <span className="search__result-title">{note.title}</span>
+                      <span
+                        className="search__result-title"
+                        dangerouslySetInnerHTML={{ __html: highlightMatch(note.title, debouncedQuery.trim()) }}
+                      />
                       {note.label && labelStyle && (
                         <span
                           className="search__result-badge"
@@ -144,9 +192,9 @@ function Search({ notes, onSelect }) {
                       )}
                     </div>
                     <div className="search__result-meta">
-                      <span>{note.subject}</span>
+                      <span dangerouslySetInnerHTML={{ __html: highlightMatch(note.subject, debouncedQuery.trim()) }} />
                       <span className="search__result-sep">·</span>
-                      <span>{note.branch}</span>
+                      <span dangerouslySetInnerHTML={{ __html: highlightMatch(note.branch, debouncedQuery.trim()) }} />
                       <span className="search__result-sep">·</span>
                       <span>{note.semester}</span>
                     </div>
