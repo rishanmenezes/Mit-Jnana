@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "title": "Engineering Mathematics - Unit 1",
+    "fileUrl": "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+    "subject": "Applied Mathematics for CS Engineering Stream",
+    "semester": "Semester 1",
+    "branch": "CSE",
+    "label": "Notes"
+  },
+  {
+    "id": 2,
+    "title": "Engineering Physics - Unit 1",
+    "fileUrl": "https://drive.google.com/file/d/0Bz7KhRLO70JFMDZBY0Y5MmxTZFE/preview",
+    "subject": "Applied Physics for CS Engineering Stream",
+    "semester": "Semester 1",
+    "branch": "CSE",
+    "label": "PYQ"
+  },
+  {
+    "id": 3,
+    "title": "Data Structures - Arrays & Linked Lists",
+    "fileUrl": "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+    "subject": "Data Structures and Applications",
+    "semester": "Semester 3",
+    "branch": "CSE",
+    "label": "Notes"
+  },
+  {
+    "id": 4,
+    "title": "Circuit Analysis - DC Circuits",
+    "fileUrl": "https://drive.google.com/file/d/0Bz7KhRLO70JFMDZBY0Y5MmxTZFE/preview",
+    "subject": "Network Analysis",
+    "semester": "Semester 3",
+    "branch": "ECE",
+    "label": "Important"
+  },
+  {
+    "id": 5,
+    "title": "Engineering Drawing - Projections",
+    "fileUrl": "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+    "subject": "Computer-Aided Engineering Drawing",
+    "semester": "Semester 1",
+    "branch": "ME",
+    "label": "Notes"
+  }
+]
