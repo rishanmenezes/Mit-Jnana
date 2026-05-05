@@ -23,28 +23,11 @@ const AlertIcon = () => (
   </svg>
 )
 
-// Time (ms) to wait for iframe load before showing error state
-const LOAD_TIMEOUT_MS = 4000
-
 function Viewer({ note, refreshKey = 0 }) {
   const [loading, setLoading] = useState(false)
   const [loadFailed, setLoadFailed] = useState(false)
   const [internalKey, setInternalKey] = useState(0)
   const timeoutRef = useRef(null)
-
-  /**
-   * If still loading when the timeout fires, assume the document
-   * failed to load and show the error state.
-   */
-  const triggerTimeout = useCallback(() => {
-    setLoading((prev) => {
-      if (prev) {
-        setLoadFailed(true)
-        return false
-      }
-      return prev
-    })
-  }, [])
 
   // Reset loading/error state whenever the active document changes
   useEffect(() => {
@@ -54,15 +37,24 @@ function Viewer({ note, refreshKey = 0 }) {
     setLoadFailed(false)
 
     clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(triggerTimeout, LOAD_TIMEOUT_MS)
+    timeoutRef.current = setTimeout(() => {
+      setLoadFailed(true)
+      setLoading(false)
+    }, 12000)
 
     return () => clearTimeout(timeoutRef.current)
-  }, [note?.id, refreshKey, internalKey, triggerTimeout])
+  }, [note?.id, refreshKey, internalKey])
 
   const handleIframeLoad = useCallback(() => {
     clearTimeout(timeoutRef.current)
     setLoading(false)
     setLoadFailed(false)
+  }, [])
+
+  const handleIframeError = useCallback(() => {
+    clearTimeout(timeoutRef.current)
+    setLoading(false)
+    setLoadFailed(true)
   }, [])
 
   const handleOpenNewTab = useCallback(() => {
@@ -145,6 +137,7 @@ function Viewer({ note, refreshKey = 0 }) {
           key={iframeKey}
           id="pdf-viewer"
           onLoad={handleIframeLoad}
+          onError={handleIframeError}
         />
       </div>
     </main>
