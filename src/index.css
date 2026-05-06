@@ -976,6 +976,10 @@ body {
     transition: transform 200ms ease;
     width: 280px;
     min-width: 280px;
+    height: calc(100% - var(--header-height));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .sidebar--open {

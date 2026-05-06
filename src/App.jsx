@@ -75,6 +75,34 @@ function App() {
     return tree
   }, [])
 
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [sidebarOpen])
+
+  // Prevent touch scroll leaking through to the page behind the sidebar
+  useEffect(() => {
+    const preventScroll = (e) => {
+      if (sidebarOpen && !e.target.closest('.sidebar')) {
+        e.preventDefault()
+      }
+    }
+
+    document.addEventListener('touchmove', preventScroll, { passive: false })
+
+    return () => {
+      document.removeEventListener('touchmove', preventScroll)
+    }
+  }, [sidebarOpen])
+
   // Keyboard shortcuts: "/" to focus search, Ctrl+B to toggle sidebar
   useEffect(() => {
     const handleKeyDown = (e) => {
