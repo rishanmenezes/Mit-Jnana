@@ -90,8 +90,12 @@ function App() {
 
   // Prevent touch scroll leaking through to the page behind the sidebar
   useEffect(() => {
+    if (!sidebarOpen) return
+
     const preventScroll = (e) => {
-      if (sidebarOpen && !e.target.closest('.sidebar')) {
+      // Never block touches when viewer is in fullscreen (pinch-zoom must work)
+      if (document.fullscreenElement) return
+      if (!e.target.closest('.sidebar')) {
         e.preventDefault()
       }
     }
