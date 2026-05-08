@@ -895,6 +895,22 @@ body {
   background: var(--color-border);
 }
 
+/* ===== Fullscreen Mode ===== */
+.content:fullscreen {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.content:fullscreen .viewer-bar {
+  flex-shrink: 0;
+}
+
+.content:fullscreen .viewer-wrapper {
+  flex: 1;
+}
+
 /* ===== Mobile Responsive ===== */
 @media (max-width: 768px) {
   :root {

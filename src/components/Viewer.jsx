@@ -15,6 +15,24 @@ const RefreshIcon = () => (
   </svg>
 )
 
+const FullscreenIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 3 21 3 21 9" />
+    <polyline points="9 21 3 21 3 15" />
+    <line x1="21" y1="3" x2="14" y2="10" />
+    <line x1="3" y1="21" x2="10" y2="14" />
+  </svg>
+)
+
+const ExitFullscreenIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="4 14 10 14 10 20" />
+    <polyline points="20 10 14 10 14 4" />
+    <line x1="14" y1="10" x2="21" y2="3" />
+    <line x1="3" y1="21" x2="10" y2="14" />
+  </svg>
+)
+
 const AlertIcon = () => (
   <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
@@ -27,7 +45,31 @@ function Viewer({ note, refreshKey = 0 }) {
   const [loading, setLoading] = useState(false)
   const [loadFailed, setLoadFailed] = useState(false)
   const [internalKey, setInternalKey] = useState(0)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const timeoutRef = useRef(null)
+  const contentRef = useRef(null)
+
+  // Sync state with browser fullscreen changes (ESC key, etc.)
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+    document.addEventListener('fullscreenchange', handleFsChange)
+    return () => document.removeEventListener('fullscreenchange', handleFsChange)
+  }, [])
+
+  const handleToggleFullscreen = useCallback(() => {
+    if (!contentRef.current) return
+    try {
+      if (!document.fullscreenElement) {
+        contentRef.current.requestFullscreen()
+      } else {
+        document.exitFullscreen()
+      }
+    } catch {
+      // Fullscreen API not supported — fail silently
+    }
+  }, [])
 
   // Reset loading/error state whenever the active document changes
   useEffect(() => {
@@ -91,7 +133,7 @@ function Viewer({ note, refreshKey = 0 }) {
   const iframeKey = `${note.id}-${refreshKey}-${internalKey}`
 
   return (
-    <main className="content" id="content-area">
+    <main className="content" id="content-area" ref={contentRef}>
       <div className="viewer-bar">
         <span className="viewer-bar__title">{note.title}</span>
         {note.label && <span className={`viewer-bar__label viewer-bar__label--${note.label.toLowerCase()}`}>{note.label}</span>}
@@ -102,6 +144,9 @@ function Viewer({ note, refreshKey = 0 }) {
           </button>
           <button className="viewer-control-btn" onClick={handleReload} title="Reload document" aria-label="Reload document" id="reload-doc-btn">
             <RefreshIcon />
+          </button>
+          <button className="viewer-control-btn" onClick={handleToggleFullscreen} title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'} aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} id="fullscreen-btn">
+            {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
           </button>
         </div>
       </div>
