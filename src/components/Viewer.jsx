@@ -58,6 +58,27 @@ function Viewer({ note, refreshKey = 0 }) {
     return () => document.removeEventListener('fullscreenchange', handleFsChange)
   }, [])
 
+  // When fullscreen is active, ensure nothing blocks native zoom gestures
+  useEffect(() => {
+    if (!isFullscreen) return
+
+    // Preserve original body styles to restore on exit
+    const origOverflow = document.body.style.overflow
+    const origTouchAction = document.body.style.touchAction
+    const origOverscroll = document.body.style.overscrollBehavior
+
+    // Unlock body so gestures propagate into the fullscreen element
+    document.body.style.overflow = ''
+    document.body.style.touchAction = 'auto'
+    document.body.style.overscrollBehavior = 'auto'
+
+    return () => {
+      document.body.style.overflow = origOverflow
+      document.body.style.touchAction = origTouchAction
+      document.body.style.overscrollBehavior = origOverscroll
+    }
+  }, [isFullscreen])
+
   const handleToggleFullscreen = useCallback(() => {
     if (!contentRef.current) return
     try {
@@ -181,6 +202,7 @@ function Viewer({ note, refreshKey = 0 }) {
           allow="autoplay; fullscreen"
           key={iframeKey}
           id="pdf-viewer"
+          style={{ touchAction: 'auto' }}
           onLoad={handleIframeLoad}
           onError={handleIframeError}
         />

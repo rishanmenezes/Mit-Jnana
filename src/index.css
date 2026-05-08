@@ -901,6 +901,8 @@ body {
   flex-direction: column;
   background: var(--color-bg);
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  touch-action: auto;
+  overflow: auto;
 }
 
 .content:fullscreen .viewer-bar {
@@ -909,12 +911,14 @@ body {
 
 .content:fullscreen .viewer-wrapper {
   flex: 1;
-  overflow: auto;
+  overflow: visible;
   touch-action: auto;
+  overscroll-behavior: auto;
 }
 
 .content:fullscreen .viewer-frame {
   touch-action: auto;
+  pointer-events: auto;
 }
 
 /* ===== Mobile Responsive ===== */
