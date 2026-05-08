@@ -187,6 +187,24 @@ function App() {
               >
                 Instagram
               </a>
+              <span className="footer__link-sep">•</span>
+              <a
+                className="footer__link"
+                href="https://forms.gle/L3QsGuSF23qZ3AhL7"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contribute Notes
+              </a>
+              <span className="footer__link-sep">•</span>
+              <a
+                className="footer__link"
+                href="https://forms.gle/dYQ6UTuTsMLSbESm7"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Report Issue
+              </a>
             </div>
           </div>
         </div>
