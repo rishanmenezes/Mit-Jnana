@@ -40,7 +40,7 @@ function Viewer({ note, refreshKey = 0 }) {
     timeoutRef.current = setTimeout(() => {
       setLoadFailed(true)
       setLoading(false)
-    }, 12000)
+    }, 20000)
 
     return () => clearTimeout(timeoutRef.current)
   }, [note?.id, refreshKey, internalKey])
