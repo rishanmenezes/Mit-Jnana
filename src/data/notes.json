@@ -6163,5 +6163,50 @@
     "semester": "Semester 4",
     "branch": "CSE-IOT",
     "label": "Notes"
+  },
+  {
+    "id": 686,
+    "title": "Introduction to Artificial Intelligence - Module 1",
+    "fileUrl": "https://drive.google.com/file/d/1Bw5Q_TW6jSmWxV6Y-kKpqJj7W6xB90Mp/preview",
+    "subject": "Introduction to Artificial Intelligence",
+    "semester": "Semester 4",
+    "branch": "CSAI",
+    "label": "Notes"
+  },
+  {
+    "id": 687,
+    "title": "Introduction to Artificial Intelligence - Module 2",
+    "fileUrl": "https://drive.google.com/file/d/1CShUjr7b2CXKTPo-AHn8156sZ63W5cFP/preview",
+    "subject": "Introduction to Artificial Intelligence",
+    "semester": "Semester 4",
+    "branch": "CSAI",
+    "label": "Notes"
+  },
+  {
+    "id": 688,
+    "title": "Introduction to Artificial Intelligence - Module 3",
+    "fileUrl": "https://drive.google.com/file/d/10bTdblKcM0olfgKI95otV6mXaOLmK1rB/preview",
+    "subject": "Introduction to Artificial Intelligence",
+    "semester": "Semester 4",
+    "branch": "CSAI",
+    "label": "Notes"
+  },
+  {
+    "id": 689,
+    "title": "Introduction to Artificial Intelligence - Module 4",
+    "fileUrl": "https://drive.google.com/file/d/15bV7WzisP0T-TE17b2kMqemLymOcwLBJ/preview",
+    "subject": "Introduction to Artificial Intelligence",
+    "semester": "Semester 4",
+    "branch": "CSAI",
+    "label": "Notes"
+  },
+  {
+    "id": 690,
+    "title": "Introduction to Artificial Intelligence - Module 5",
+    "fileUrl": "https://drive.google.com/file/d/1jKXXQ5eJ-s5igJ_uMqMIUthej6uR7Z0q/preview",
+    "subject": "Introduction to Artificial Intelligence",
+    "semester": "Semester 4",
+    "branch": "CSAI",
+    "label": "Notes"
   }
 ]

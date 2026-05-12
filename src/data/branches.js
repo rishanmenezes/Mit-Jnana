@@ -438,7 +438,7 @@ const SEMESTER_SUBJECTS = {
       'Database Management Systems',
       'Linear Algebra',
       'Microcontroller',
-      'Introduction to Data Science',
+      'Introduction to Artificial Intelligence',
       'Analysis and Design of Algorithms',
       'Universal Human Values',
     ],
