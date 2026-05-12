@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback, memo } from 'react'
 import { LABEL_COLORS } from '../data/constants'
+import SEARCH_ALIASES from '../data/searchAliases'
 
 /** Debounce a value by the given delay (ms). */
 function useDebounce(value, delay = 250) {
@@ -26,6 +27,29 @@ function highlightMatch(text, query) {
   return safeText.replace(regex, '<mark>$1</mark>')
 }
 
+/**
+ * Resolve alias expansions for a query.
+ * Returns a Set of lowercase full subject names that match via aliases.
+ * Checks exact alias match first, then partial alias matches.
+ */
+function resolveAliases(q) {
+  const expanded = new Set()
+
+  // Exact alias match (highest priority)
+  if (SEARCH_ALIASES[q]) {
+    SEARCH_ALIASES[q].forEach(s => expanded.add(s.toLowerCase()))
+  }
+
+  // Also check if query is a prefix/substring of any alias key
+  for (const [alias, subjects] of Object.entries(SEARCH_ALIASES)) {
+    if (alias.startsWith(q) || q.startsWith(alias)) {
+      subjects.forEach(s => expanded.add(s.toLowerCase()))
+    }
+  }
+
+  return expanded
+}
+
 function Search({ notes, onSelect }) {
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
@@ -36,10 +60,13 @@ function Search({ notes, onSelect }) {
 
   const debouncedQuery = useDebounce(query)
 
-  // Ranked search: exact match (3) > prefix match (2) > contains (1)
+  // Ranked search: exact alias (3) > exact match (3) > prefix match (2) > contains (1)
   const results = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase()
     if (!q || !Array.isArray(notes)) return []
+
+    // Resolve abbreviations to full subject names
+    const aliasMatches = resolveAliases(q)
 
     return notes
       .map((note) => {
@@ -51,7 +78,9 @@ function Search({ notes, onSelect }) {
 
         let score = 0
 
-        if (title === q || subject === q) score = 3
+        // Alias match — treat as high-priority match
+        if (aliasMatches.size > 0 && aliasMatches.has(subject)) score = 3
+        else if (title === q || subject === q) score = 3
         else if (title.startsWith(q) || subject.startsWith(q)) score = 2
         else if (
           title.includes(q) ||
