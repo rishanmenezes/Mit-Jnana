@@ -27,6 +27,7 @@ function CollapsibleSection({ label, tooltip, children, depth = 0, isEmpty = fal
       <button
         className={`sidebar-toggle ${isEmpty ? 'sidebar-toggle--empty' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
+        aria-expanded={isOpen}
         style={{ paddingLeft: `${16 + depth * 12}px` }}
         title={tooltip || label}
       >
@@ -89,7 +90,7 @@ function FileList({ files, activeNoteId, onSelectNote, depth }) {
 
 function Sidebar({ navTree, activeNoteId, onSelectNote, isOpen }) {
   return (
-    <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`} id="sidebar-nav">
+    <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`} id="sidebar-nav" role="navigation" aria-label="Notes navigation">
       {Object.entries(navTree).map(([branchCode, semesters]) => (
         <CollapsibleSection
           key={branchCode}

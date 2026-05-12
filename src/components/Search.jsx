@@ -153,7 +153,7 @@ function Search({ notes, onSelect }) {
   const showDropdown = isOpen && query.trim().length > 0
 
   return (
-    <div className="search" ref={wrapperRef} id="search-wrapper">
+    <div className="search" ref={wrapperRef} id="search-wrapper" role="search" aria-label="Search notes">
       <div className="search__input-wrapper">
         <svg className="search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />

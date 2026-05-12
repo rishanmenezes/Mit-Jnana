@@ -97,6 +97,42 @@ function App() {
     }
   }, [deepLinkProcessed])
 
+  // ── Dynamic SEO: update document title & meta description ──
+  const DEFAULT_TITLE = 'MIT Jnana \u2014 MIT Mysore Student Notes Hub'
+  const DEFAULT_DESCRIPTION =
+    'MIT Jnana is a student resource hub for Maharaja Institute of Technology Mysore students. Access semester-wise notes, PDFs, PYQs, and study materials for CSE, ISE, ECE, ME, CV and more.'
+
+  useEffect(() => {
+    if (activeNote) {
+      const noteTitle = activeNote.title?.trim() || 'Notes'
+      document.title = `${noteTitle} | MIT Jnana`
+
+      const desc = `${noteTitle} \u2014 ${activeNote.subject || ''} notes for ${activeNote.semester || ''} on MIT Jnana. Free engineering study material for MIT Mysore students.`
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute('content', desc)
+
+      // Update OG tags for better social sharing when deep-linked
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute('content', `${noteTitle} | MIT Jnana`)
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute('content', desc)
+    } else {
+      document.title = DEFAULT_TITLE
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute('content', DEFAULT_DESCRIPTION)
+      document
+        .querySelector('meta[property="og:title"]')
+        ?.setAttribute('content', DEFAULT_TITLE)
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute('content', 'All MIT Mysore engineering notes in one place. Access semester-wise PDFs, PYQs, and study materials for CSE, ISE, ECE, ME, CV and more.')
+    }
+  }, [activeNote])
+
   // ── Mobile auto-open sidebar (first session only) ──
   useEffect(() => {
     const isMobile = window.innerWidth <= 768
