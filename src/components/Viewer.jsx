@@ -41,13 +41,25 @@ const AlertIcon = () => (
   </svg>
 )
 
-function Viewer({ note, refreshKey = 0 }) {
+const ShareIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+  </svg>
+)
+
+function Viewer({ note, refreshKey = 0, allNotes }) {
   const [loading, setLoading] = useState(false)
   const [loadFailed, setLoadFailed] = useState(false)
   const [internalKey, setInternalKey] = useState(0)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [shareCopied, setShareCopied] = useState(false)
   const timeoutRef = useRef(null)
   const contentRef = useRef(null)
+  const shareCopiedTimerRef = useRef(null)
 
   // Sync state with browser fullscreen changes (ESC key, etc.)
   useEffect(() => {
@@ -132,6 +144,47 @@ function Viewer({ note, refreshKey = 0 }) {
     setInternalKey((k) => k + 1)
   }, [])
 
+  const handleShare = useCallback(async () => {
+    if (!note) return
+
+    const shareUrl = `${window.location.origin}?note=${note.id}`
+
+    // Try native share (mobile)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: note.title,
+          text: 'Study note from MIT Jnana',
+          url: shareUrl,
+        })
+        return
+      } catch (err) {
+        // User cancelled or share failed — fall through to clipboard
+        if (err.name === 'AbortError') return
+      }
+    }
+
+    // Fallback: copy to clipboard
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+    } catch {
+      // Last-resort fallback for older browsers
+      const textarea = document.createElement('textarea')
+      textarea.value = shareUrl
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+    }
+
+    // Show "Link copied!" toast
+    setShareCopied(true)
+    clearTimeout(shareCopiedTimerRef.current)
+    shareCopiedTimerRef.current = setTimeout(() => setShareCopied(false), 2000)
+  }, [note])
+
   // Empty state — no note selected
   if (!note) {
     return (
@@ -160,6 +213,10 @@ function Viewer({ note, refreshKey = 0 }) {
         {note.label && <span className={`viewer-bar__label viewer-bar__label--${note.label.toLowerCase()}`}>{note.label}</span>}
         <span className="viewer-bar__meta">{note.subject} · {note.semester}</span>
         <div className="viewer-controls" id="viewer-controls">
+          <button className="viewer-control-btn" onClick={handleShare} title="Share note" aria-label="Share note" id="share-note-btn">
+            <ShareIcon />
+          </button>
+          {shareCopied && <span className="viewer-share-toast" id="share-toast">Link copied!</span>}
           <button className="viewer-control-btn" onClick={handleOpenNewTab} title="Open in new tab" aria-label="Open in new tab" id="open-new-tab-btn">
             <ExternalLinkIcon />
           </button>

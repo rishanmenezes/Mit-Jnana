@@ -895,6 +895,33 @@ body {
   background: var(--color-border);
 }
 
+/* Share toast */
+.viewer-share-toast {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  white-space: nowrap;
+  animation: share-toast-in 200ms ease-out;
+  pointer-events: none;
+}
+
+@keyframes share-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ===== Fullscreen Mode ===== */
 .content:fullscreen {
   display: flex;

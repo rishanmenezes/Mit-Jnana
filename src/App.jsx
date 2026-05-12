@@ -9,6 +9,7 @@ function App() {
   const [activeNote, setActiveNote] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [deepLinkProcessed, setDeepLinkProcessed] = useState(false)
 
   /**
    * Build the navigation tree from static data.
@@ -75,6 +76,36 @@ function App() {
     return tree
   }, [])
 
+  // ── Deep link: read ?note= param on initial load ──
+  useEffect(() => {
+    if (deepLinkProcessed) return
+    setDeepLinkProcessed(true)
+
+    const params = new URLSearchParams(window.location.search)
+    const noteId = params.get('note')
+    if (!noteId) return
+
+    const id = Number(noteId)
+    if (!Number.isFinite(id)) return
+
+    const match = notes.find((n) => n.id === id)
+    if (match) {
+      setActiveNote(match)
+    } else {
+      // Invalid/deleted note ID — clean the URL silently
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [deepLinkProcessed])
+
+  // ── Mobile auto-open sidebar (first session only) ──
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 768
+    if (isMobile && !sessionStorage.getItem('mitjnana_sidebar_seen')) {
+      setSidebarOpen(true)
+      sessionStorage.setItem('mitjnana_sidebar_seen', 'true')
+    }
+  }, [])
+
   // Lock body scroll when mobile sidebar is open
   useEffect(() => {
     if (sidebarOpen) {
@@ -134,6 +165,9 @@ function App() {
         setActiveNote(note)
       }
       setSidebarOpen(false)
+
+      // Update URL with the selected note ID for deep linking
+      window.history.replaceState({}, '', `?note=${note.id}`)
     },
     [activeNote?.id]
   )
@@ -159,6 +193,7 @@ function App() {
         <Viewer
           note={activeNote}
           refreshKey={refreshKey}
+          allNotes={notes}
         />
       </div>
       <footer className="footer" id="app-footer">
