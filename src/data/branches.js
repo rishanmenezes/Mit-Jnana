@@ -59,7 +59,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -71,7 +70,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CSAI
@@ -84,7 +82,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -96,7 +93,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // ISE
@@ -109,7 +105,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -121,7 +116,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CSDS
@@ -134,7 +128,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -146,7 +139,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CSBS
@@ -159,7 +151,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -171,7 +162,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CSE-IOT
@@ -184,7 +174,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -196,7 +185,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CE
@@ -209,7 +197,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -221,7 +208,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CSE-AIML
@@ -234,7 +220,6 @@ const SEMESTER_SUBJECTS = {
         'AI for Everyone',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -246,7 +231,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // ME
@@ -259,7 +243,6 @@ const SEMESTER_SUBJECTS = {
         'Renewable Sources of Energy',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -271,7 +254,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // CV
@@ -284,7 +266,6 @@ const SEMESTER_SUBJECTS = {
         'Introduction to Python Programming',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -296,7 +277,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
     // ECE
@@ -309,7 +289,6 @@ const SEMESTER_SUBJECTS = {
         'Introduction to Python Programming',
         'Innovation and Design Thinking',
         'Kannada (Samskrutika / Balake)',
-        'Professional Writing Skills in English',
         'Communicative English',
       ],
       'Chemistry Cycle': [
@@ -321,7 +300,6 @@ const SEMESTER_SUBJECTS = {
         'Scientific Foundation of Health',
         'Biology for Engineers',
         'Professional Writing Skills in English',
-        'Communicative English',
       ],
     },
   },
