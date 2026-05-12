@@ -148,13 +148,20 @@ function Viewer({ note, refreshKey = 0, allNotes }) {
     if (!note) return
 
     const shareUrl = `${window.location.origin}?note=${note.id}`
+    const shareTitle =
+      note.title?.trim() || `${note.subject} ${note.label || 'Notes'}`
+
+    const buildShareMessage = (title, url) =>
+      `📘 ${title}\n\nMight help before internals and exams 👀\n\nShared via MIT Jnana\n\n${url}`
+
+    const shareText = buildShareMessage(shareTitle, shareUrl)
 
     // Try native share (mobile)
     if (navigator.share) {
       try {
         await navigator.share({
-          title: note.title,
-          text: 'Study note from MIT Jnana',
+          title: shareTitle,
+          text: shareText,
           url: shareUrl,
         })
         return
@@ -164,13 +171,13 @@ function Viewer({ note, refreshKey = 0, allNotes }) {
       }
     }
 
-    // Fallback: copy to clipboard
+    // Fallback: copy full formatted message to clipboard
     try {
-      await navigator.clipboard.writeText(shareUrl)
+      await navigator.clipboard.writeText(shareText)
     } catch {
       // Last-resort fallback for older browsers
       const textarea = document.createElement('textarea')
-      textarea.value = shareUrl
+      textarea.value = shareText
       textarea.style.position = 'fixed'
       textarea.style.opacity = '0'
       document.body.appendChild(textarea)
@@ -179,7 +186,7 @@ function Viewer({ note, refreshKey = 0, allNotes }) {
       document.body.removeChild(textarea)
     }
 
-    // Show "Link copied!" toast
+    // Show "Link copied" toast
     setShareCopied(true)
     clearTimeout(shareCopiedTimerRef.current)
     shareCopiedTimerRef.current = setTimeout(() => setShareCopied(false), 2000)
@@ -216,7 +223,7 @@ function Viewer({ note, refreshKey = 0, allNotes }) {
           <button className="viewer-control-btn" onClick={handleShare} title="Share note" aria-label="Share note" id="share-note-btn">
             <ShareIcon />
           </button>
-          {shareCopied && <span className="viewer-share-toast" id="share-toast">Link copied!</span>}
+          {shareCopied && <span className="viewer-share-toast" id="share-toast">Link copied</span>}
           <button className="viewer-control-btn" onClick={handleOpenNewTab} title="Open in new tab" aria-label="Open in new tab" id="open-new-tab-btn">
             <ExternalLinkIcon />
           </button>
